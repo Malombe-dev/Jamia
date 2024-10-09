@@ -40,8 +40,6 @@ def homepage():
     # fetch shoes
     shoes = cursor5.fetchall()
 
-
-
     return render_template('index.html',phones = phones, Electronics = Electronics , Makeup = Makeup, Footwear = Footwear , clothes = clothes , shoes = shoes)
 # route  for a sinle item
 
@@ -96,7 +94,7 @@ def upload ():
       return render_template ('/upload.html' , error = "Please add a product")
 
 
-#  fashio Route 
+#  fashion Route 
     # helps you to see all the fasghions 
 @app.route ('/fashion')
 def fashion():
@@ -174,9 +172,25 @@ def About():
     return "this is about page "
 
 
-@app.route('/register')
+@app.route('/register', methods = ['POST','GET'])
 def Register ():
-    return " this is register page "
+ if request.method ==  'POST':
+    user_name = request.form['user_name ']
+    email = request.form['email']
+    gender = request.form['gender']
+    password = request.form['password']
+    connection = pymysql.connect(host='localhost',user='root',password='',database='Jamia LTD')
+    cursor = connection.cursor()
+    sql = "insert into users(user_name ,email,gender,password)"
+    data = user_name,email,gender,password,
+    cursor.execute = (sql,data)
+    connection.commit
+ 
+   
+    return render_template('/register.html', message = "log in  successfly")
+ else:
+    return render_template('/register.html', error = "please log in")
+ 
 
 @app.route('/login')
 def Login():
